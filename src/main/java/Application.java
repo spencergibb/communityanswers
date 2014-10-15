@@ -28,80 +28,67 @@ public class Application {
         return new RestTemplate();
     }
 
-    @Bean
-    EricController ericController() {
-        return new EricController();
-    }
-
-    @Bean
-    EricComponent ericComponent() {
-        return new EricComponent();
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-}
 
-@RestController
-@RequestMapping(value = "/makebunchofcalls/{num}")
-class EricController {
+    @RestController
+    @RequestMapping(value = "/makebunchofcalls/{num}")
+    public static class EricController {
 
-    @Autowired
-    private EricComponent ericComponent;
+        @Autowired
+        private EricComponent ericComponent;
 
-    @RequestMapping(method = {RequestMethod.GET})
-    ArrayList<String> doCalls(@PathVariable Integer num) throws IOException {
-        final ArrayList<String> ale = new ArrayList<>(num);
-        for (int i = 0; i < num; i++) {
-            rx.Observable<Eric> oe = this.ericComponent.doRestTemplateCallAsync(i);
-            oe.toBlockingObservable().forEach(new Action1<Eric>() {
+        @RequestMapping(method = {RequestMethod.GET})
+        ArrayList<String> doCalls(@PathVariable Integer num) throws IOException {
+            final ArrayList<String> ale = new ArrayList<>(num);
+            for (int i = 0; i < num; i++) {
+                rx.Observable<Eric> oe = this.ericComponent.doRestTemplateCallAsync(i);
+                //oe.subscribe(new Action1<Eric>() {
+                oe.toBlockingObservable().forEach(new Action1<Eric>() {
+                    @Override
+                    public void call(Eric e) {  // AT RUNTIME, ClassCastException
+                        ale.add(e.val + " " + e.status);
+                    }
+                });
+            }
+
+            return ale;
+        }
+    }
+
+    @Component
+    public static class EricComponent {
+
+        // async version =========== using reactive execution via rx library from netflix ==============
+        @Autowired
+        RestTemplate restTemplate;
+
+        @HystrixCommand(fallbackMethod = "defaultRestTemplateCallAsync", commandKey = "dogeAsync")
+        public Observable<Eric> doRestTemplateCallAsync(final int callNum) {
+            return new ObservableResult<Eric>() {
                 @Override
-                public void call(Eric e) {  // AT RUNTIME, ClassCastException
-                    ale.add(e.val+" "+e.status);
+                public Eric invoke() {  // NEVER CALLED
+                    ResponseEntity<String> result = restTemplate.getForEntity("http://localhost:8761/v2/apps", String.class);  // actually make a call
+                    System.out.println("*************** call successfull: " + new Integer(callNum) + " *************");
+                    return new Eric(new Integer(callNum).toString(), "ok");
                 }
-            });
+            };
         }
 
-        return ale;
-    }
-}
-
-@Component
-class EricComponent {
-
-    // async version =========== using reactive execution via rx library from netflix ==============
-    @Autowired
-    RestTemplate restTemplate;
-
-    @HystrixCommand(fallbackMethod = "defaultRestTemplateCallAsync", commandKey = "dogeAsync")
-    public Observable<Eric> doRestTemplateCallAsync(final int callNum) {
-        return new ObservableResult<Eric>() {
-            @Override
-            public Eric invoke() {  // NEVER CALLED
-                try {
-                    ResponseEntity<String> result = restTemplate.getForEntity("http://doges/doges/24232/photos", String.class);  // actually make a call
-                    System.out.println("*************** call successfull: " + new Integer(callNum) + " *************");
-                } catch (Exception ex) {
-                    System.out.println("=============== call " + new Integer(callNum).toString() + " not successfull: " + ex.getMessage() + " =============");
-                }
-                return new Eric(new Integer(callNum).toString(), "ok");
-            }
-        };
+        public Eric defaultRestTemplateCallAsync(final int callNum) {
+            System.out.println("!!!!!!!!!!!!! call bombed " + new Integer(callNum) + "!!!!!!!!!!!!!");
+            return new Eric(new Integer(callNum).toString(), "bomb");
+        }
     }
 
-    public Eric defaultRestTemplateCallAsync(final int callNum) {
-        System.out.println("!!!!!!!!!!!!! call bombed " + new Integer(callNum) + "!!!!!!!!!!!!!");
-        return new Eric(new Integer(callNum).toString(), "bomb");
-    }
-}
+    public static class Eric {
+        String val;
+        String status;
 
-class Eric {
-    String val;
-    String status;
-
-    Eric(String val, String status) {
-        this.val = val;
-        this.status = status;
+        Eric(String val, String status) {
+            this.val = val;
+            this.status = status;
+        }
     }
 }
