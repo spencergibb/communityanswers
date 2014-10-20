@@ -8,11 +8,11 @@
 		<version>1.1.5.RELEASE</version>
 	</parent>
 
-	<groupId>soZZZ</groupId>
-	<artifactId>soZZZ</artifactId>
+	<groupId>so26450251</groupId>
+	<artifactId>so26450251</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Stack Overflow ZZZ</name>
+	<name>Stack Overflow 26450251</name>
 
 
 	<properties>
@@ -54,7 +54,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter</artifactId>
+			<artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
