@@ -8,11 +8,11 @@
 		<version>1.1.5.RELEASE</version>
 	</parent>
 
-	<groupId>so26372319</groupId>
-	<artifactId>so26372319</artifactId>
+	<groupId>soZZZ</groupId>
+	<artifactId>soZZZ</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Stack Overflow 26372319</name>
+	<name>Stack Overflow ZZZ</name>
 
 
 	<properties>
@@ -54,11 +54,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-bus-amqp</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-hystrix</artifactId>
+			<artifactId>spring-cloud-starter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
