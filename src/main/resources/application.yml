@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: myconfigserver
+  profiles:
+    active: native
+
+my:
+  property: myvalue
