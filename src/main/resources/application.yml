@@ -3,12 +3,6 @@ spring:
     name: myconfigserver
   profiles:
     active: native
-  cloud:
-    config:
-      server:
-        native:
-          fail-on-error: true
-          locations: classpath:myprops.yml
 
 my:
   property: myvalue
