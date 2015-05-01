@@ -5,15 +5,15 @@
 	<parent>
 		 <groupId>org.springframework.cloud</groupId>
 		 <artifactId>spring-cloud-starter-parent</artifactId>
-		 <version>1.0.0.RELEASE</version>
+		 <version>1.0.2.BUILD-SNAPSHOT</version>
 		 <relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>community</groupId>
-	<artifactId>29683709-refresh-scope</artifactId>
+	<artifactId>gh-326-feign-npe</artifactId>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Stack Overflow 29683709 Refresh Scope</name>
+	<name>gh-326-feign-npe</name>
 
 
 	<properties>
@@ -34,11 +34,19 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-feign</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-hystrix</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-eureka</artifactId>
+			<artifactId>spring-cloud-starter-security</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

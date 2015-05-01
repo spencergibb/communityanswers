@@ -1,6 +1,9 @@
 spring:
   application:
     name: testRefreshScope
+  oauth2:
+    resource:
+      userInfoUri: http://my-domain.com/auth/user
 
 eureka:
   password: password
